@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Repeater that receives strings messages from the 'chatter'
+ topic, modifies them, and then sends them on the 'chatter_repeated' topic
+"""
 import robot_model
 import rclpy
 from rclpy.node import Node
