@@ -42,7 +42,7 @@ def twist_to_speeds(speed_linear, speed_angular):
     #same sign as the linear speed,
     #   (can say: linear_speed = (left + right)/2 = mean(left,right)).
     #By solving this system of equations, eft and right values are obtained.
-    
+
 #def system_matrix(theta):
     #"""Returns a numpy array with the A(theta) matrix for a differential drive robot"""
     #return a_matrix
