@@ -12,8 +12,9 @@ import robot_model
 
 motor_left = MotorSpeedLeft()
 motor_right = MotorSpeedRight()
-    
+
 class MotorCommand(Node):
+    '''subscription to Twist and publishing motors speeds associated with twist'''
     def __init__(self):
         super().__init__('MotorCommand')#line I added
         self.subscriber = self.create_subscription(Twist, 'robot_twist', self.msg_callback, 10)
@@ -29,7 +30,7 @@ class MotorCommand(Node):
         msg.left = float(motor_left)
         msg.right = float(motor_right)
         self.publisher.publish(msg)
-              
+
 def main(args=None):
     '''
     Init ROS, launch node, spin, cleanup
