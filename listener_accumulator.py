@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple repeater demo that receives std_msgs/Strings messages from the 'chatter'
+Repeater that receives strings messages from the 'chatter'
  topic, modifies them, and then sends them on the 'chatter_repeated' topic
 """
 
@@ -66,7 +66,6 @@ def main(args=None):
     # node cleanup
     listener_accumulator.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
