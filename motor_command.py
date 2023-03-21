@@ -21,6 +21,7 @@ class MotorCommand(Node):
         self.publisher = self.create_publisher(MotorSpeedsStamped, 'motor_speeds', 10)
 
     def msg_callback(self, msg):
+        '''msg_callback takes the speeds and sets them to float and publishes them'''
         left,right = robot_model.twist_to_speeds(msg.linear.x,msg.angular.z)
         motor_left.set_speed(left)
         motor_right.set_speed(right)
