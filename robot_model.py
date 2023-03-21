@@ -1,8 +1,7 @@
 """Functions for modeling ROSBot"""
 
-#from math import cos, sin
-
-#import numpy as np
+from math import cos, sin
+import numpy as np
 
 
 def model_parameters():
@@ -14,8 +13,7 @@ def model_parameters():
 def twist_to_speeds(speed_linear, speed_angular):
     """Returns the motor speeds of the left and right wheels based on the linear and
     angular velocities of the robot given as inputs"""
-    if not -1.0<=speed_linear<= 1.0 or not -1.0<=speed_angular <= 1.0 or 
-    (speed_angular==0 and speed_linear!=0):
+    if not -1.0<=speed_linear<= 1.0 or not -1.0<=speed_angular <= 1.0 or (speed_angular==0 and speed_linear!=0):
         # If either the linear or angular speeds are outside the range of [-1.0,1.0],
         # or if the robot is commanded to turn without moving forward,
         # then the robot should not move.
