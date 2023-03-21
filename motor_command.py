@@ -1,4 +1,5 @@
-from robot_model import twist_to_speeds
+#!/usr/bin/env python3
+import robot_model
 import rclpy
 from rclpy.node import Node
 from me416_utilities import MotorSpeedLeft, MotorSpeedRight
@@ -9,20 +10,21 @@ motor_left = MotorSpeedLeft()
 motor_right = MotorSpeedRight()
     
 class MotorCommand(Node):
-        def __init__(self):
-                self.subscriber = self.create_subscription(Twist, 'robot_twist', self.msg_callback, 10)
-                self.publisher = self.create_publisher(MotorSpeedsStamped, 'motor_speeds', 10)
+    def __init__(self):
+        super().__init__('MotorCommand')#line I added
+        self.subscriber = self.create_subscription(Twist, 'robot_twist', self.msg_callback, 10)
+        self.publisher = self.create_publisher(MotorSpeedsStamped, 'motor_speeds', 10)
 
-        def msg_callback(self, msg):
-              left,right = twist_to_speeds(msg.linear.x,msg.angular.z)
-              motor_left.set_speed(left)
-              motor_right.set_speed(right)
+    def msg_callback(self, msg):
+        left,right = robot_model.twist_to_speeds(msg.linear.x,msg.angular.z)
+        motor_left.set_speed(left)
+        motor_right.set_speed(right)
 
-              msg = MotorSpeedsStamped()
-              msg.header.stamp= self.get_clock().now().to_msg()
-              msg.left = float(motor_left)
-              msg.right = float(motor_right)
-              self.publisher.publish(msg)
+        msg = MotorSpeedsStamped()
+        msg.header.stamp= self.get_clock().now().to_msg()
+        msg.left = float(motor_left)
+        msg.right = float(motor_right)
+        self.publisher.publish(msg)
               
 def main(args=None):
     '''
