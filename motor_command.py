@@ -3,12 +3,12 @@
 Repeater that receives strings messages from the 'chatter'
  topic, modifies them, and then sends them on the 'chatter_repeated' topic
 """
-import robot_model
 import rclpy
 from rclpy.node import Node
 from me416_utilities import MotorSpeedLeft, MotorSpeedRight
 from geometry_msgs.msg import Twist
 from me416_msgs.msg import MotorSpeedsStamped
+import robot_model
 
 motor_left = MotorSpeedLeft()
 motor_right = MotorSpeedRight()
