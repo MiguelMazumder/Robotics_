@@ -25,7 +25,8 @@ class ListenerAccumulator(Node):
         Create timer to trigger publish of concatenated messages
         '''
         timer_period=3.0
-        self.timer = self.create_timer(timer_period, self.timer_callback)#publish based on timer_period
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        #publish based on timer_period
         self.accumulated_messages = "" #had to be initially empty
 
     def msg_callback(self, msg):
