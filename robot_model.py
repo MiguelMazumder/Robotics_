@@ -28,6 +28,10 @@ def twist_to_speeds(speed_linear, speed_angular):
         sign=speed_angular/abs(speed_angular)
         left = speed_linear - sign*(omega)
         right = speed_linear + sign*(omega)
+    if speed_linear > 0 and ((left+right)/2)<0:
+        min_val=min(left,right)
+        left+=abs(min_val)
+        right+=abs(min_val)    
     # Return the computed left and right motor speeds as a tuple.
     return left,right
     #Formulas for left and right speeds determined from these conditions:
