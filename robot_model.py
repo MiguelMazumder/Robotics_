@@ -1,7 +1,7 @@
 """Functions for modeling ROSBot"""
 
 #from math import cos, sin
-import numpy as np
+#import numpy as np
 
 
 def model_parameters():
@@ -32,7 +32,6 @@ def twist_to_speeds(speed_linear, speed_angular):
         sign=speed_angular/abs(speed_angular)
         left = speed_linear - sign*(omega / 2.0)
         right = speed_linear + sign*(omega / 2.0)
-
     # Return the computed left and right motor speeds as a tuple.
     return left, right
     #Formulas for left and right speeds determined from these conditions:
