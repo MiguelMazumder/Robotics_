@@ -29,8 +29,8 @@ def twist_to_speeds(speed_linear, speed_angular):
     else:
         # Otherwise, compute left right motor speeds using the differential drive model.
         omega = speed_linear / speed_angular
-        left = speed_linear - (omega / 2.0)
-        right = speed_linear + (omega / 2.0)
+        left = speed_linear + omega
+        right = speed_linear + omega
 
     # Return the computed left and right motor speeds as a tuple.
     return left, right
