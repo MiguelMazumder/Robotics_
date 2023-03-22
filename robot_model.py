@@ -13,27 +13,27 @@ def model_parameters():
 def twist_to_speeds(speed_linear, speed_angular):
     """Returns the motor speeds of the left and right wheels based on the linear and
     angular velocities of the robot given as inputs"""
-    if abs(speed_angular)>1:
-        speed_angular=speed_angular/abs(speed_angular)
-    if abs(speed_linear)>1:
-        speed_linear=speed_linear/abs(speed_linear)
-    if abs(speed_angular) < 0.1:
+    if abs(speed_linear)>1.0 or abs(speed_angular)>1.0 or (speed_angular==0 and speed_linear!= 0):
         # If either the linear or angular speeds are outside the range of [-1.0,1.0],
         # or if the robot is commanded to turn without moving forward,
         # then the robot should not move.
+        left = 0.0
+        right = 0.0
+    elif abs(speed_angular) < 0.1:
+        # If the absolute value of the angular velocity is small enough to
+        #be negligible (less than 0.1),
+        # then the left motor should move at roughly the same speed as the
+        #right motor which is given by the inputted linear velocity.
         left = speed_linear
         right = speed_linear
     else:
+        # Otherwise, compute left right motor speeds using the differential drive model.
         omega = speed_linear / speed_angular
-        sign=speed_angular/abs(speed_angular)
-        left = speed_linear - sign*(omega)
-        right = speed_linear + sign*(omega)
-    if speed_linear > 0 and ((left+right)/2)<0:
-        min_val=min(left,right)
-        left+=abs(min_val)
-        right+=abs(min_val)    
+        left = speed_linear - (omega / 2.0)
+        right = speed_linear + (omega / 2.0)
+
     # Return the computed left and right motor speeds as a tuple.
-    return left,right
+    return left, right
     #Formulas for left and right speeds determined from these conditions:
     # 1) If angular speed is >0, then right-left=positive # =angular_speed
     #   and if angular speed < 0, then left-right=positive # =angular_speed
