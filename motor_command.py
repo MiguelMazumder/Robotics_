@@ -13,7 +13,7 @@ import robot_model
 motor_left = MotorSpeedLeft()
 motor_right = MotorSpeedRight()
 
-class MotorCommand(Node):
+class motorcommand(Node):
     '''subscription to Twist and publishing motors speeds associated with twist'''
     def __init__(self):
         super().__init__('MotorCommand')#line I added
@@ -23,13 +23,15 @@ class MotorCommand(Node):
     def msg_callback(self, msg):
         '''msg_callback takes the speeds and sets them to float and publishes them'''
         left,right = robot_model.twist_to_speeds(msg.linear.x,msg.angular.z)
-        motor_left.set_speed(left)
-        motor_right.set_speed(right)
+        left_float=float(left)
+        right_float=float(right)
+        motor_left.set_speed(left_float)
+        motor_right.set_speed(right_float)
 
         msg = MotorSpeedsStamped()
         msg.header.stamp= self.get_clock().now().to_msg()
-        msg.left = float(motor_left)
-        msg.right = float(motor_right)
+        msg.left = left#float(motor_left)
+        msg.right = right#float(motor_right)
         self.publisher.publish(msg)
 
 def main(args=None):
@@ -37,7 +39,7 @@ def main(args=None):
     Init ROS, launch node, spin, cleanup
     '''
     rclpy.init(args=args)
-    motor = MotorCommand()
+    motor = motorcommand()
     rclpy.spin(motor)
 
     # node cleanup
