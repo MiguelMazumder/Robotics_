@@ -8,12 +8,12 @@ from geometry_msgs.msg import Twist
 import robot_model
 
 
-class KeyTerminate(Node):
+class Keyop(Node):
     '''
     Simple Node class that uses a timer to check for key presses
     '''
     def __init__(self):
-        super().__init__('key_terminate')
+        super().__init__('Keyop')
         self.timer = self.create_timer(
             1. / 50,  # Check keys at 50Hz
             self.timer_callback)
@@ -50,7 +50,7 @@ def main(args=None):
     """Function to setup node and loop"""
     print('\tPress "q" to quit.\n')
     rclpy.init(args=args)
-    node = KeyTerminate()
+    node = Keyop()
     while node.is_running:
         rclpy.spin_once(node)
     rclpy.shutdown()
