@@ -17,9 +17,9 @@ def system_matrix(theta):
     """Returns a numpy array with the A(theta) matrix for a differential drive robot"""
     [k,d] = model_parameters()
     theta=float(theta)
-    matrix = np.array([[cos(theta),cos(theta)], [cos(theta),cos(theta)], [-1/d,1/d]])
-    A = k/2*matrix
-    return A
+    matrix = np.array([[cos(theta),cos(theta)], [sin(theta),sin(theta)], [-1/d,1/d]])
+    a_mat = k/2*matrix
+    return a_mat
 
 
 #def system_field(z, u):
@@ -29,8 +29,8 @@ def system_matrix(theta):
 
 def euler_step(z_current, u_input, step_size):
     """Integrates the dynamical model for one time step using Euler's method"""
-    A_z=system_matrix(z_current)
-    z_next=z_current+step_size*(np.matmul(A_z,u_input))
+    a_z=system_matrix(z_current)
+    z_next=z_current+step_size*(np.matmul(a_z,u_input))
     return z_next
 
 def twist_to_speeds(speed_linear, speed_angular):
