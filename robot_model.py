@@ -30,7 +30,9 @@ def system_matrix(theta):
 def euler_step(z_current, u_input, step_size):
     """Integrates the dynamical model for one time step using Euler's method"""
     a_z=system_matrix(z_current)
-    z_next=z_current+step_size.*np.matmul(a_z,u_input)
+    vector_u = np.vectorize(np.u_input)
+    z_current = np.vectorize(np.z_current)
+    z_next=z_current+step_size*np.matmul(a_z,u_input)
     return z_next
 
 def twist_to_speeds(speed_linear, speed_angular):
