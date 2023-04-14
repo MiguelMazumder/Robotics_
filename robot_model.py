@@ -101,8 +101,8 @@ class StampedMsgRegister():
         the previous message with the current message."""
         time_delay=None
         if self.msg_previous is not None:
-            time2 = Time.from_msg(self.msg_previous)
-            time1 = Time.from_msg(msg)
+            time1 = Time.from_msg(self.msg_previous)
+            time2 = Time.from_msg(msg)
             time_delay = time2 - time1
             #time_delay = ult.stamp_difference(self.msg_previous,msg)
             msg_previous_copy=self.msg_previous
