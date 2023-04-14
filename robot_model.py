@@ -10,21 +10,21 @@ class KeysToVelocities():   # pylint: disable=too-few-public-methods
     def __init__(self):
         self.speed_linear=0.0
         self.speed_angular=0.0
-        self.SPEED_DELTA=0.2
+        self.speed_delta=0.2
 
     def update_speeds(self, key):
         """Uses key input to update the linear and angular speeds"""
         if key.lower() == 'w':
-            self.speed_linear = self.speed_linear+self.SPEED_DELTA
+            self.speed_linear = self.speed_linear+self.speed_delta
             text_description = 'Increase linear speed'
         elif key.lower() == 's':
-            self.speed_linear = self.speed_linear-self.SPEED_DELTA
+            self.speed_linear = self.speed_linear-self.speed_delta
             text_description = 'Decrease linear speed'
         elif key.lower() == 'a':
-            self.speed_angular = self.speed_angular+self.SPEED_DELTA
+            self.speed_angular = self.speed_angular+self.speed_delta
             text_description = 'Increase angular speed'
         elif key.lower() == 'd':
-            self.speed_angular = self.speed_angular-self.SPEED_DELTA
+            self.speed_angular = self.speed_angular-self.speed_delta
             text_description = 'Decrease angular speed'
         elif key.lower() == 'z':
             self.speed_linear = 0.0
@@ -103,7 +103,7 @@ class StampedMsgRegister():
         if self.msg_previous is not None:
             time1 = Time.from_msg(self.msg_previous.header.stamp)
             time2 = Time.from_msg(msg.header.stamp)
-            time_delay = float(time2) - float(time1)
+            time_delay = time2 - time1
             #delay=utilities.stamp_difference(msg.header.stamp,self.msg_previous.header.stamp)
         msg_prev = self.msg_previous
         self.msg_previous = msg
