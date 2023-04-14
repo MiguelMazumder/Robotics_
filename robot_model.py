@@ -3,7 +3,7 @@
 
 from math import cos, sin
 import numpy as np
-import me416_utilities
+#import me416_utilities
 from rclpy.time import Time
 
 class KeysToVelocities():   # pylint: disable=too-few-public-methods
@@ -102,13 +102,13 @@ class StampedMsgRegister():
         the previous message with the current message."""
         time_delay = None
         if self.msg_previous is not None:
-            #time1 = Time.from_msg(self.msg_previous.header.stamp)
-            #time2 = Time.from_msg(msg.header.stamp)
-            #time_delay = time2 - time1
-            time_delay = me416_utilities.stamp_difference(msg.header.stamp,self.msg_previous.header.stamp)
+            time1 = Time.from_msg(self.msg_previous.header.stamp)
+            time2 = Time.from_msg(msg.header.stamp)
+            time_delay = time2 - time1
+            #time_delay = me416_utilities.stamp_difference(msg.header.stamp,self.msg_previous.header.stamp)
         msg_prev = self.msg_previous
         self.msg_previous = msg
-        return time_delay, msg_prev
+        return time_delay.nanoseconds/1e9, msg_prev
     def previous_stamp(self):
         """returns stamp of msg"""
         if self.msg_previous is None:
