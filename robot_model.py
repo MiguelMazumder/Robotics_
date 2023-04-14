@@ -135,10 +135,11 @@ class StampedMsgRegister():
             #time_delay = ult.stamp_difference(self.msg_previous,msg)
             msg_previous_copy=self.msg_previous
             self.msg_previous=msg
-            return [time_delay.nanoseconds / 1e9],msg_previous_copy
+            #return [time_delay.nanoseconds / 1e9],msg_previous_copy
+            return time_delay,msg_previous_copy if self.msg_previous is not None else None
     def previous_stamp(self):
         """returns stamp"""
         stamp=None
         if stamp is not None:
             stamp=self.msg_previous.header.stamp
-            return stamp
+            return stamp if stamp is not None else None
