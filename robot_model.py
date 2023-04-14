@@ -99,24 +99,19 @@ class StampedMsgRegister():
         """Given new stamped message input, computes delay (sec) between time stamp of
         message and the value in time_previous , andthen replaces the internal copy of
         the previous message with the current message."""
-        time_delay=None
-        if self.msg_previous is not None:
-            time1 = Time.from_msg(self.msg_previous)
-            time2 = Time.from_msg(msg)
-            time_delay = time2 - time1
-            #time_delay = ult.stamp_difference(self.msg_previous,msg)
-            msg_previous_copy=self.msg_previous
-            self.msg_previous=msg
-            #return [time_delay.nanoseconds / 1e9],msg_previous_copy
-            return time_delay,msg_previous_copy#if self.msg_previous is not None else None
+        if self.msg_previous is None:
+           time_delay = None
         else:
-            time_delay=Time.from_msg(msg)
-            msg_previous_copy=self.msg_previous
-            return time_delay,msg_previous_copy
+            time1 = Time.from_msg(self.msg_previous.header.stamp)
+            time2 = Time.from_msg(msg.header.stamp)
+            time_delay = time2 - time1
+            #time_delay = me416_utilities.stamp_difference(msg.header.stamp, self.msg_previous.header.stamp)
+        msg_prev = self.msg_previous
+        self.msg_previous = msg
+        return time_delay, msg_prev
     def previous_stamp(self):
         """returns stamp"""
-        if self.msg_previous is not None and hasattr(self.msg_previous, 'header') and hasattr(self.msg_previous.header, 'stamp'):
-            stamp = self.msg_previous.header.stamp
-            return stamp
-        else:
+        if self.msg_previous is None:
             return None
+        return self.msg_previous.header.stamp
+
