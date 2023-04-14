@@ -110,7 +110,7 @@ class StampedMsgRegister():
         self.msg_previous = msg
         return time_delay, msg_prev
     def previous_stamp(self):
-        """returns stamp"""
+        """returns stamp of msg"""
         if self.msg_previous is None:
             return None
         return self.msg_previous.header.stamp
