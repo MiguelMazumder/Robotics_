@@ -99,12 +99,11 @@ class StampedMsgRegister():
         """Given new stamped message input, computes delay (sec) between time stamp of
         message and the value in time_previous , andthen replaces the internal copy of
         the previous message with the current message."""
-        if self.msg_previous is None:
-            time_delay = None
-        else:
+        time_delay = None
+        if self.msg_previous is not None:
             time1 = Time.from_msg(self.msg_previous.header.stamp)
             time2 = Time.from_msg(msg.header.stamp)
-            time_delay = time2 - time1
+            time_delay = float(time2) - float(time1)
             #delay=utilities.stamp_difference(msg.header.stamp,self.msg_previous.header.stamp)
         msg_prev = self.msg_previous
         self.msg_previous = msg
