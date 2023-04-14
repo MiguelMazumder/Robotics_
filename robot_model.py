@@ -139,7 +139,8 @@ class StampedMsgRegister():
             return time_delay,msg_previous_copy if self.msg_previous is not None else None
     def previous_stamp(self):
         """returns stamp"""
-        stamp=None
-        if stamp is not None:
-            stamp=self.msg_previous.header.stamp
-            return stamp if stamp is not None else None
+        if self.msg_previous is not None and hasattr(self.msg_previous, 'header') and hasattr(self.msg_previous.header, 'stamp'):
+            stamp = self.msg_previous.header.stamp
+            return stamp
+        else:
+            return None
