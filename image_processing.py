@@ -21,10 +21,10 @@ def classifier_parameters():
     return bound_low, bound_high
 
 
-def image_patch(img, x, y, w, h):
+def image_patch(img, x__, y__, w__, h__):
     """ Returns a region of interest of img specified by box """
     # check box against the boundaries of the image
-    box = [y, x, y + h, x + w]
+    box = [y__, x__, y__ + h__, x__ + w__]
     if box[0] < 0:
         box[0] = 0
     if box[1] < 0:
@@ -43,11 +43,11 @@ def image_line_vertical(img, x):
     return img
 
 
-def image_rectangle(img, x, y, w, h):
-    """ Adds a green rectangle to the image """
+#def image_rectangle(img, x__, y__, w__, h__):
+    #""" Adds a green rectangle to the image """
     # This implementation is a stub. You should implement your own code here.
 
-    return img
+    #return img
 
 
 def image_one_to_three_channels(img):
@@ -64,9 +64,13 @@ def image_centroid_horizontal(img):
     a grascale image
     """
     # Assumes that img contains only black and white pixels
+    white_pixels = np.argwhere(img == 255)  # Find the indices of all white pixels
+    x_coords = white_pixels[:, 1]           # Get the x coordinates of all white pixels
 
-    # This implementation is a stub. Substitute with your own code.
-    x_centroid = 0
+    if len(x_coords) == 0:   # If there are no white pixels, return zero
+        return 0
+
+    x_centroid = int(np.median(x_coords))
     return x_centroid
 
 
@@ -80,10 +84,10 @@ def pixel_count(img):
     # Initialize a counter for non-zero pixels
     count = 0
     # Loop through each pixel in the image
-    for y in range(height):
-        for x in range(width):
+    for y_iter in range(height):
+        for x_iter in range(width):
             # Check if the pixel value is non-zero
-            if img[y, x] != 0:
+            if img[y_iter, x_iter] != 0:
                 # Increment the counter
                 count += 1
     nb_positive=count
@@ -115,22 +119,22 @@ def segmentation_statistics(filename_positive, filename_negative):
     #find if it fits in range 0 if it doesnt, 255 if it does
     img_pos_yhat=cv2.inRange(img_positive_hsv,low_,high_)
     img_neg_yhat=cv2.inRange(img_negative_hsv, low_, high_)
-    p1,f1=pixel_count(img_pos_yhat)
-    p2,f2=pixel_count(img_neg_yhat)
-    precision,recall=precision_recall(p1, f2, f1)
+    p_1,f_1=pixel_count(img_pos_yhat)
+    p_2,f_2=pixel_count(img_neg_yhat)
+    precision,recall=precision_recall(p_1, f_2, f_1)
     # Display statistics
     #number of points in image
-    print(f"Total Number of points in {filename_positive}: {p1+f1}")
-    print(f"Total Number of points in {filename_negative}: {p2+f2}")
+    print(f"Total Number of points in {filename_positive}: {p_1+f_1}")
+    print(f"Total Number of points in {filename_negative}: {p_2+f_2}")
     #number of positives and negatives in each image
-    print(f"Total number of positives in {filename_positive}: {p1}")
-    print(f"Total number of negatives in {filename_positive}: {f1}")
-    print(f"Total number of positives in {filename_negative}: {p2}")
-    print(f"Total number of negatives in {filename_negative}: {f2}")
+    print(f"Total number of positives in {filename_positive}: {p_1}")
+    print(f"Total number of negatives in {filename_positive}: {f_1}")
+    print(f"Total number of positives in {filename_negative}: {p_2}")
+    print(f"Total number of negatives in {filename_negative}: {f_2}")
     #number of false positives and false negatives
     print(f"Number of false positives in {filename_positive}: {0}")
-    print(f"Number of false negatives in {filename_positive}: {f1}")
-    print(f"Number of false positives in {filename_negative}: {p2}")
+    print(f"Number of false negatives in {filename_positive}: {f_1}")
+    print(f"Number of false positives in {filename_negative}: {p_2}")
     print(f"Number of false negatives in {filename_negative}: {0}")
     #print recall
     print(f"Precision: {precision}")
@@ -139,26 +143,28 @@ def segmentation_statistics(filename_positive, filename_negative):
 
 
 def image_centroid_test():
+    """random docstring till i figure it out"""
     # load test image
     img = cv2.imread('line-test.jpg')
     # make segmented image
-    lb, ub = classifier_parameters()
-    img_seg = cv2.inRange(img, lb, ub)
+    lb__, ub__ = classifier_parameters()
+    img_seg = cv2.inRange(img, lb__, ub__)
     # compute centroid
-    x = image_centroid_horizontal(img_seg)
+    x__ = image_centroid_horizontal(img_seg)
     # make img color
     color = image_one_to_three_channels(img_seg)
     # add line on color img
-    line = image_line_vertical(color, x)
+    line = image_line_vertical(color, x__)
     # show images
     cv2.imshow('test_original', img)
     cv2.waitKey()
     cv2.imshow('test_segmented', line)
     cv2.waitKey()
 def image_statistics_test():
+    """Calls the segmentation statistics as well as write for line and cross"""
     #do it with train and cross
-    precision_train,recall_train=segmentation_statistics('train_positive.png', 'train_negative.png')
-    precision_cross,recall_cross=segmentation_statistics('train_positive.png', 'train_negative.png')
+    _,_=segmentation_statistics('train_positive.png', 'train_negative.png')
+    _,_=segmentation_statistics('train_positive.png', 'train_negative.png')
     #apply same thresholds to line-training and line-cross
     line_train=cv2.imread('line-training.png')
     train_hsv=cv2.cvtColor(line_train,cv2.COLOR_BGR2HSV)
