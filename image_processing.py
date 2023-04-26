@@ -117,11 +117,11 @@ def segmentation_statistics(filename_positive, filename_negative):
     img_positive_hsv=cv2.cvtColor(img_positive,cv2.COLOR_BGR2HSV)
     img_negative_hsv=cv2.cvtColor(img_negative,cv2.COLOR_BGR2HSV)
     #find if it fits in range 0 if it doesnt, 255 if it does
-    img_pos_yhat=cv2.inRange(img_positive_hsv,low_,high_)
-    img_neg_yhat=cv2.inRange(img_negative_hsv, low_, high_)
+    img_pos_yhat=cv2.inRange(img_positive_hsv,high_,low_)
+    img_neg_yhat=cv2.inRange(img_negative_hsv,high_, low_)
     p_1,f_1=pixel_count(img_pos_yhat)
     p_2,f_2=pixel_count(img_neg_yhat)
-    precision,recall=precision_recall(p_1, f_2, f_1)
+    precision,recall=precision_recall(p_1, p_2, f_1)
     # Display statistics
     #number of points in image
     print(f"Total Number of points in {filename_positive}: {p_1+f_1}")
@@ -145,7 +145,7 @@ def segmentation_statistics(filename_positive, filename_negative):
 def image_centroid_test():
     """random docstring till i figure it out"""
     # load test image
-    img = cv2.imread('line-test.jpg')
+    img = cv2.imread('line-test.png')
     # make segmented image
     lb__, ub__ = classifier_parameters()
     img_seg = cv2.inRange(img, lb__, ub__)
@@ -164,17 +164,30 @@ def image_statistics_test():
     """Calls the segmentation statistics as well as write for line and cross"""
     #do it with train and cross
     _,_=segmentation_statistics('train_positive.png', 'train_negative.png')
-    _,_=segmentation_statistics('train_positive.png', 'train_negative.png')
+    _,_=segmentation_statistics('cross_positive.png', 'cross_negative.png')
+    _,_=segmentation_statistics('test_positive.png', 'test_negative.png')
     #apply same thresholds to line-training and line-cross
-    line_train=cv2.imread('line-training.png')
+    line_train=cv2.imread('line-train.png')
     train_hsv=cv2.cvtColor(line_train,cv2.COLOR_BGR2HSV)
     line_cross=cv2.imread('line-cross.png')
     cross_hsv=cv2.cvtColor(line_cross,cv2.COLOR_BGR2HSV)
+    line_test=cv2.imread('line-test.png')
+    test_hsv=cv2.cvtColor(line_test,cv2.COLOR_BGR2HSV)
     high_,low_=classifier_parameters()
-    train_mask=cv2.inRange(train_hsv,low_,high_)
-    cross_mask=cv2.inRange(cross_hsv,low_,high_)
-    cv2.imwrite('line-training_mask',train_mask)
-    cv2.imwrite('cross-training_mask',cross_mask)
+    train_mask=cv2.inRange(train_hsv,high_,low_)
+    cross_mask=cv2.inRange(cross_hsv,high_,low_)
+    test_mask=cv2.inRange(test_hsv,high_,low_)
+    cv2.namedWindow('line-train-mask', cv2.WINDOW_NORMAL)
+    cv2.namedWindow('line-cross-mask', cv2.WINDOW_NORMAL)
+    cv2.namedWindow('line-test-mask', cv2.WINDOW_NORMAL)
+    cv2.imshow('line-train-mask',train_mask)
+    cv2.imshow('line-cross-mask',cross_mask)
+    cv2.imshow('line-test-mask',test_mask)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    cv2.imwrite('line-train_mask.png',train_mask)
+    cv2.imwrite('line-cross_mask.png',cross_mask)
+    cv2.imwrite('line-test_mask.png',test_mask)
 
 if __name__ == '__main__':
-    test()
+    image_centroid_test()
