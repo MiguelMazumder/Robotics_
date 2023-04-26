@@ -37,10 +37,10 @@ def image_patch(img, x__, y__, w__, h__):
     return img[box[0]:box[2], box[1]:box[3], :]
 
 
-def image_line_vertical(img, x):
+def image_line_vertical(img, x__):
     """ Adds a green 3px vertical line to the image """
-    cv2.line(img, (x, 0), (x, img.shape[1]), (0, 255, 0), 3)
-    return img
+    imgout=cv2.line(img, (x__, 0), (x__, img.shape[1]), (0, 255, 0), 3)
+    return imgout
 
 
 #def image_rectangle(img, x__, y__, w__, h__):
@@ -147,8 +147,8 @@ def image_centroid_test():
     # load test image
     img = cv2.imread('line-test.png')
     # make segmented image
-    lb__, ub__ = classifier_parameters()
-    img_seg = cv2.inRange(img, lb__, ub__)
+    high, low = classifier_parameters()
+    img_seg = cv2.inRange(img, high, low)
     # compute centroid
     x__ = image_centroid_horizontal(img_seg)
     # make img color
@@ -157,9 +157,9 @@ def image_centroid_test():
     line = image_line_vertical(color, x__)
     # show images
     cv2.imshow('test_original', img)
-    cv2.waitKey()
+    cv2.waitKey(0)
     cv2.imshow('test_segmented', line)
-    cv2.waitKey()
+    cv2.waitKey(0)
 def image_statistics_test():
     """Calls the segmentation statistics as well as write for line and cross"""
     #do it with train and cross
